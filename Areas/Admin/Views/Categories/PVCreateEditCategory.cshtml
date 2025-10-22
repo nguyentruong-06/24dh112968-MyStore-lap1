@@ -1,0 +1,22 @@
+﻿@model _24dh112968_MyStore_lap1.Models.Category
+
+
+
+
+
+
+<div class="mb-3 row">
+    <label class="col-md-2 col-form-label fw-bold">Tên danh mục</label>
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.CategoryName,
+            new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên danh mục..." } })
+        @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger mt-1 d-block" })
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-10 offset-md-2">
+        <input type="submit" value="Lưu danh mục" class="btn btn-primary me-2" />
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>

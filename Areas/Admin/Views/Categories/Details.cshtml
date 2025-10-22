@@ -5,23 +5,20 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Details</h2>
+<div class="container mt-4">
+    <h2 class="bg-success p-3 rounded">THÔNG TIN CHI TIẾT DANH MỤC</h2>
 
-<div>
-    <h4>Category</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
+    <div class="details-card mt-3">
+        <div class="row mb-3">
+            <div class="col-md-3 details-label">Tên danh mục:</div>
+            <div class="col-md-9 details-value">
+                @Html.DisplayFor(model => model.CategoryName)
+            </div>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-
-    </dl>
+    <div class="mt-4">
+        @Html.ActionLink("Sửa", "Edit", new { id = Model.CategoryID }, new { @class = "btn btn-primary me-2" })
+        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CategoryID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
