@@ -1,0 +1,57 @@
+﻿@model _24dh112968_MyStore_lap1.Models.Product
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="bg-success text-white p-3 rounded">CHI TIẾT SẢN PHẨM</h2>
+
+    <div class="card shadow-sm mt-4 p-4">
+        <div class="row">
+            <!-- Ảnh sản phẩm -->
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.ProductImage))
+                {
+                    <img src="@Model.ProductImage"
+                         alt="@Model.ProductName"
+                         class="img-fluid rounded border"
+                         style="max-height: 300px; object-fit: contain;" />
+                }
+                else
+                {
+                    <div class="border rounded bg-light d-flex align-items-center justify-content-center"
+                         style="height: 300px;">
+                        <span class="text-muted">Không có ảnh</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Tên sản phẩm:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ProductName)</dd>
+
+                    <dt class="col-sm-4 fw-bold">Mô tả:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ProductDescription)</dd>
+
+                    <dt class="col-sm-4 fw-bold">Đơn giá:</dt>
+                    <dd class="col-sm-8 text-danger fw-semibold">
+                        @string.Format("{0:N0} ₫", Model.ProductPrice)
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Danh mục:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Category.CategoryName)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nút điều hướng -->
+    <div class="mt-4">
+        @Html.ActionLink("Sửa", "Edit", new { id = Model.ProductID }, new { @class = "btn btn-primary me-2" })
+        @Html.ActionLink(" Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>

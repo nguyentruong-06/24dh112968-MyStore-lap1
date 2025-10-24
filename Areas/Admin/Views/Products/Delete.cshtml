@@ -1,0 +1,66 @@
+﻿@model _24dh112968_MyStore_lap1.Models.Product
+
+@{
+    ViewBag.Title = "Xóa sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="bg-danger text-white p-3 rounded">XÓA SẢN PHẨM</h2>
+
+    <div class="alert alert-warning mt-3" role="alert">
+        <strong>Bạn có chắc chắn muốn xóa sản phẩm này không?</strong><br />
+        Hành động này không thể hoàn tác!
+    </div>
+
+    <div class="card shadow-sm p-4 mt-4">
+        <div class="row">
+            <!-- Ảnh sản phẩm -->
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.ProductImage))
+                {
+                    <img src="@Model.ProductImage"
+                         alt="@Model.ProductName"
+                         class="img-fluid rounded border"
+                         style="max-height: 250px; object-fit: contain;" />
+                }
+                else
+                {
+                    <div class="border rounded bg-light d-flex align-items-center justify-content-center"
+                         style="height: 250px;">
+                        <span class="text-muted">Không có ảnh</span>
+                    </div>
+                }
+            </div>
+
+            <!-- Thông tin sản phẩm -->
+            <div class="col-md-8">
+                <dl class="row">
+                    <dt class="col-sm-4 fw-bold">Tên sản phẩm:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ProductName)</dd>
+
+                    <dt class="col-sm-4 fw-bold">Mô tả:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.ProductDescription)</dd>
+
+                    <dt class="col-sm-4 fw-bold">Đơn giá:</dt>
+                    <dd class="col-sm-8 text-danger fw-semibold">
+                        @string.Format("{0:N0} ₫", Model.ProductPrice)
+                    </dd>
+
+                    <dt class="col-sm-4 fw-bold">Danh mục:</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(model => model.Category.CategoryName)</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form xác nhận xóa -->
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="mt-4 d-flex align-items-center">
+            <input type="submit" value="Xác nhận xóa" class="btn btn-danger me-3" />
+            @Html.ActionLink(" Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+</div>
