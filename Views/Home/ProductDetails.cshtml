@@ -1,0 +1,121 @@
+﻿@model _24dh112968_MyStore_lap1.Models.ViewModle.ProductDetailsVM
+
+@{
+    ViewBag.Title = "Chi Tiết Sản Phẩm: " + Model.product.ProductName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    @* Bạn nên chuyển khối <style> này sang file CSS riêng (CustomerDetailProduct.css) để code sạch hơn. *@
+    <style>
+        .pro {
+            padding: 50px 10px;
+            background-color: ghostwhite;
+        }
+
+        .pro-section {
+            background-color: white;
+            border: 1px groove #ffffff;
+            border-radius: 10px;
+            padding: 15px; /* Tăng padding để đẹp hơn */
+            margin: 0 5px; /* Thêm margin ngang để các cột không dính vào nhau */
+        }
+
+            .pro-section img {
+                max-height: 250px;
+                max-width: 200px;
+                padding: 5px;
+            }
+
+        .pro-price {
+            font-weight: bolder;
+            font-size: larger;
+            color: red;
+        }
+
+        .pro-sale {
+            font-weight: lighter;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<div class="container-fluid pro">
+    <div class="row div-horizontal">
+
+        @* CỘT 1: ẢNH SẢN PHẨM (col-md-3) *@
+        <div class="col-md-3 pro-section">
+            <h4>Ảnh sản phẩm</h4>
+            <hr />
+            <div class="text-center">
+                <img src="@Url.Content(Model.product.ProductImage)" alt="@Model.product.ProductName" class="img-fluid" />
+            </div>
+        </div>
+
+        @* CỘT 2: THÔNG TIN VÀ SẢN PHẨM LIÊN QUAN (col-md-5) *@
+        <div class="col-md-5 pro-section">
+            @* PHẦN THÔNG TIN CƠ BẢN *@
+            <div class="product-info-section">
+                <h2>@Html.DisplayFor(model => model.product.ProductName)</h2>
+                <p class="pro-sale">
+                    Đã bán:&nbsp;@Model.product.OrderDetails.Count sản phẩm
+                </p>
+                <p class="pro-price">
+                    Giá: @Model.product.ProductPrice.ToString("C", new System.Globalization.CultureInfo("vi-VN"))
+                    @* Dùng "vi-VN" để định dạng tiền tệ (VD: 1.000,00 ₫) *@
+                </p>
+                <p>
+                    Tủ sách:&nbsp;@Model.product.Category.CategoryName
+                </p>
+            </div>
+
+            <hr />
+
+            @* PHẦN MÔ TẢ *@
+            <h5>Mô tả:</h5>
+            <p style="white-space: pre-wrap;">@Model.product.ProductDescription</p>
+
+            <hr />
+
+            @* KHỐI RELATED PRODUCT *@
+            <div class="related-products-block">
+                @Html.Partial("_PVRelatedProduct", Model)
+            </div>
+        </div>
+
+        @* CỘT 3: TÍNH TOÁN & SẢN PHẨM BÁN CHẠY (col-md-3) *@
+        <div class="col-md-3 pro-section">
+            <div class="form-group checkout-section">
+
+                @* FORM TÍNH TOÁN VÀ THÊM GIỎ HÀNG *@
+                @using (Html.BeginForm("ProductDetails", "Home", FormMethod.Get))
+                {
+                    <h5>Số lượng</h5>
+                    @Html.TextBoxFor(model => model.quantity, new
+                    {
+                        @class = "form-control",
+                        @type = "number",
+                        @min = 1,
+                        @style = "width: 100px; margin-bottom: 10px;"
+                    })
+
+                    <h5>Tạm tính:</h5>
+                    <p class="h4 text-primary">@Model.estimatedValue.ToString("N0") VNĐ</p>
+
+                    <p class="mt-3">
+                        @Html.ActionLink("Thêm vào giỏ hàng", "AddToCart", "Cart",
+                            new { id = Model.product.ProductID, quantity = Model.quantity },
+                            new { @class = "btn btn-info btn-block" })
+                    </p>
+                }
+            </div>
+
+            <hr />
+
+            @* KHỐI TOP PRODUCT *@
+            <div class="top-products-block">
+                @Html.Partial("_PVTopProduct", Model)
+            </div>
+        </div>
+    </div>
+</div>
