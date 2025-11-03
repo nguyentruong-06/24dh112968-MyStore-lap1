@@ -1,0 +1,170 @@
+﻿@model _24dh112968_MyStore_lap1.Models.ViewModle.Cart
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    /* CSS tùy chỉnh bổ sung cho giao diện */
+    .btn-mua-hang-custom {
+        background-color: #dc3545; /* Màu đỏ nổi bật */
+        border-color: #dc3545;
+        font-weight: bold;
+    }
+
+        .btn-mua-hang-custom:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .text-tong-gia-tri {
+        color: #dc3545 !important;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .cart-quantity-control input {
+        width: 40px;
+        text-align: center;
+        border: 1px solid #ced4da;
+    }
+
+    .product-image-thumbnail {
+        max-height: 80px;
+        width: auto;
+    }
+
+    .card-summary {
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: .25rem;
+    }
+</style>
+
+
+<script language="JavaScript">
+    function cartUpdateQuantity(id, newQuantity) {
+        if (newQuantity < 1) return;
+
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '@Url.Action("UpdateQuantity", "Cart")';
+
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = id;
+        form.appendChild(idInput);
+
+        const quantityInput = document.createElement('input');
+        quantityInput.type = 'hidden';
+        quantityInput.name = 'quantity';
+        quantityInput.value = newQuantity;
+        form.appendChild(quantityInput);
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+<div class="container my-5">
+    <h1 class="mb-4">GIỎ HÀNG</h1>
+    <hr />
+
+    @if (!Model.Items.Any())
+    {
+        // Hiển thị khi giỏ hàng trống
+        <div class="alert alert-warning" role="alert">
+            <p>Bạn chưa có sản phẩm nào trong giỏ.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table align-middle table-borderless">
+                        <thead class="border-bottom">
+                            <tr>
+                                <th colspan="2" style="width:45%;">Sản phẩm</th>
+                                <th class="text-center" style="width:15%;">Số lượng</th>
+                                <th class="text-end" style="width:15%;">Đơn giá</th>
+                                <th class="text-end" style="width:15%;">Thành tiền</th>
+                                @*<th class="text-center" style="width:10%;"> </th>*@
+                                <th class="text-center" style="width:10%;">
+                                    <a href="@Url.Action("ClearCart", "Cart")" title="Xóa tất cả mặt hàng trong giỏ" class="text-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr class="border-bottom">
+                                    <td class="py-2">
+                                        <img src="@item.ProductImage" alt="@item.ProductName" class="product-image-thumbnail img-thumbnail p-0 border-0" />
+                                    </td>
+                                    <td>
+                                        <strong class="text-dark">@item.ProductName</strong>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="input-group input-group-sm justify-content-center cart-quantity-control">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                    onclick="cartUpdateQuantity(@item.ProductID, @item.Quantity - 1)">
+                                                -
+                                            </button>
+
+                                            <input type="number" name="quantity" value="@item.Quantity" min="1" max="100"
+                                                   class="form-control" readonly />
+
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                    onclick="cartUpdateQuantity(@item.ProductID, @item.Quantity + 1)">
+                                                +
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">@item.UnitPrice.ToString("N0")</td>
+                                    <td class="text-end"><strong>@item.TotalPrice.ToString("N0")</strong></td>
+
+                                    <td class="text-center">
+                                        <a href="@Url.Action("RemoveFromCart", "Cart", new { id = item.ProductID })" class="text-muted" title="Xóa sản phẩm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-1 d-none d-lg-block">
+            </div>
+
+            <div class="col-lg-3 mt-4 mt-lg-0">
+                <div class="card-summary">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="fs-5">Tổng giá trị:</span>
+                        <span class="text-tong-gia-tri">@Model.TotalValue().ToString("N0") VNĐ</span>
+                    </div>
+
+                    @Html.ActionLink("Mua hàng", "Checkout", "Cart", null, new { @class = "btn btn-mua-hang-custom btn-lg w-100" })
+                </div>
+            </div>
+        </div>
+    }
+
+    ---
+
+    <div class="row mt-4">
+        <div class="col-12">
+            @Html.ActionLink("Tiếp tục mua hàng", "Index", "Home", null, new { @class = "btn btn-warning py-2 px-4" })
+        </div>
+    </div>
+
+</div>
