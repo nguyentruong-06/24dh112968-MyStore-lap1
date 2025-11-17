@@ -99,6 +99,60 @@ namespace _24dh112968_MyStore_lap1.Controllers
 
             return View(model);
         }
+        public ActionResult ProfileInfo()
+        {
+            // Get the current logged-in user's username
+            string username = User.Identity.Name;
+
+            // Retrieve the customer information
+            var customerInfo = db.Customers.FirstOrDefault(c => c.Username == username);
+
+            if (customerInfo == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(customerInfo );
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateContact(_24dh112968_MyStore_lap1.Models.Customer model)
+        {
+            if (ModelState.IsValid)
+            {
+                string username = User.Identity.Name;
+                var customer = db.Customers.FirstOrDefault(c => c.Username == username);
+
+                if (customer != null)
+                {
+                    customer.CustomerPhone = model.CustomerPhone;
+                    customer.CustomerEmail = model.CustomerEmail;
+                    customer.CustomerAddress = model.CustomerAddress;
+
+                    db.SaveChanges();
+                    TempData["Message"] = "Contact information updated successfully.";
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        public ActionResult Logout()
+        {
+            // Hủy cookie xác thực
+            FormsAuthentication.SignOut();
+
+            // Xóa session
+            Session.Clear();
+            Session.RemoveAll();
+            Session.Abandon();
+
+            // Quay về trang Login
+            return RedirectToAction("Login", "Account");
+        }
+
+
+
+
     }
-    
+
 }
