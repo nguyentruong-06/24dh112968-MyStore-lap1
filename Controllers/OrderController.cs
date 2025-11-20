@@ -109,6 +109,30 @@ namespace _24dh112968_MyStore_lap1.Controllers
             return View(order);
         }
 
+        public ActionResult OrderHistory()
+        {
+            int customerId = 1; // Tạm thời, sau này lấy từ user login
+
+            // Lấy danh sách đơn hàng của khách hàng
+            var orders = db.Orders
+                           .Where(o => o.CustomerID == customerId)
+                           .OrderByDescending(o => o.OrderDate)
+                           .ToList();
+
+            // Tạo ViewModel để hiển thị chi tiết mỗi đơn hàng
+            var model = orders.Select(o => new OrderHistoryVM
+            {
+                OrderID = o.OrderID,
+                OrderDate = o.OrderDate,
+                TotalAmount = o.TotalAmount,
+                PaymentStatus = o.PaymentStatus,
+                DeliveryMethod = o.DeliveryMethod
+            }).ToList();
+
+            return View(model);
+        }
+
+
         //// GET: Order
         //public ActionResult Index()
         //{

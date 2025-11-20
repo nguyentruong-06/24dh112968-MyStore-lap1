@@ -188,6 +188,7 @@
     <Compile Include="Models\ViewModle\CheckOutVM.cs" />
     <Compile Include="Models\ViewModle\HomeProductVM.cs" />
     <Compile Include="Models\ViewModle\LoginVM.cs" />
+    <Compile Include="Models\ViewModle\OrderHistoryVM.cs" />
     <Compile Include="Models\ViewModle\PersonalMenuVM.cs" />
     <Compile Include="Models\ViewModle\ProductDetailsVM.cs" />
     <Compile Include="Models\ViewModle\ProductSearchVM.cs" />
@@ -292,11 +293,13 @@
     <Content Include="Views\Account\ProfileInfo.cshtml" />
     <Content Include="Views\Order\CheckOut.cshtml" />
     <Content Include="Views\Order\Success.cshtml" />
+    <Content Include="Views\Order\OrderHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Views\Customer\" />
+    <Folder Include="Views\OrderHistoryVM\" />
     <Folder Include="Views\PersonalMenuVM\" />
   </ItemGroup>
   <ItemGroup>

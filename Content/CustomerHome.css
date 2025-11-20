@@ -93,7 +93,7 @@
     scroll-snap-align: start; /* để các sản phẩm dừng lại ở đầu khi cuộn*/
 }
 
-    .fproduct-item img {
+    .product-item img {
         padding: 5px;
         max-height: 160px;
         vertical-align: central;
@@ -122,9 +122,13 @@
 
     .lproduct-item img {
         padding: 5px;
-        max-height: 120px; /* điều chỉnh theo độ rộng màn hình */
+        max-height: 350px; 
+        
         background-color: transparent;
     }
+
+
+
 
 /* các thuộc tính chung của FEATURE và NEW sản phẩm*/
 .featureProd h2, .listProduct h2 {
@@ -157,3 +161,4 @@
     color: dimgrey;
     padding: 0px 5px 5px 5px;
 }
+
